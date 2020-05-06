@@ -10,36 +10,43 @@ namespace DatabaseChoose
         public DataBaseConnectionFactory(DatabaseChooseOptions _options)
         {
             this.options = _options;
-
-            //设置默认值
-            switch (this.options.DefaultChoose)
+            if (string.IsNullOrWhiteSpace(this.options.WriteConnectionString)|| string.IsNullOrWhiteSpace(this.options.ReadConnectionString))
             {
-                case DefaultChoose.Write:
-                    this.ConnectionString = this.options.WriteConnectionString;
-                    this.IsWrite = true;
-                    break;
-                case DefaultChoose.Read:
-                    this.ConnectionString = this.options.ReadConnectionString;
-                    this.IsWrite = false;
-                    break;
+                throw new Exception("需要配置连接字符串");
             }
-            
+
+
+            this.DatabaseChooseType = this.options.DefaultChoose;
+            this.ConnectionString = GetConnectionString(this.DatabaseChooseType);
+
         }
 
         public DatabaseChooseOptions options { get; set; }
+        /// <summary>
+        /// 需要使用的连接字符串
+        /// </summary>
         public string ConnectionString { get; set; }
-        public bool IsWrite { get; set; } = false;
+        /// <summary>
+        /// 是否使用写的数据库字符串
+        /// </summary>
+        public DatabaseChooseType  DatabaseChooseType { get; set; }
 
-        public void SetIsWrite(bool isWrite)
+        public void SetDatabaseChooseType(DatabaseChooseType  chooseType)
         {
-            this.IsWrite = isWrite;
-            if (this.IsWrite)
+            this.DatabaseChooseType = chooseType;
+            this.ConnectionString = GetConnectionString(chooseType);
+        }
+
+        private string GetConnectionString(DatabaseChooseType chooseType)
+        {
+            switch (chooseType)
             {
-                this.ConnectionString = this.options.WriteConnectionString;
-            }
-            else
-            {
-                this.ConnectionString = this.options.ReadConnectionString;
+                case DatabaseChooseType.Write:
+                    return this.options.WriteConnectionString;
+                case DatabaseChooseType.Read:
+                    return this.options.ReadConnectionString;
+                default:
+                    return null;
             }
         }
     }

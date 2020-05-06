@@ -14,10 +14,11 @@ namespace DatabaseChoose
 
         /// <summary>
         /// 默认选择哪个连接字符串
+        /// 不设置则使用Read
         /// </summary>
-        public DefaultChoose DefaultChoose { get; set; } = DefaultChoose.Read;
+        public DatabaseChooseType DefaultChoose { get; set; } = DatabaseChooseType.Read;
     }
-    public enum DefaultChoose
+    public enum DatabaseChooseType
     { 
         Write,
         Read

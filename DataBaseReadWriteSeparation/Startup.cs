@@ -37,17 +37,14 @@ namespace DataBaseReadWriteSeparation
             services.AddDbContext<TestDbcontext>(options =>
                     options.UseMySql(writeConnectionString));
 
-
-            services.AddScoped(typeof(EFRepository<>));
-
-
-
             services.AddDatabaseChoose(a=> {
                 a.WriteConnectionString = writeConnectionString;
                 a.ReadConnectionString = readConnectionString;
-                a.DefaultChoose = DefaultChoose.Write;
+                //a.DefaultChoose = DatabaseChooseType.Read;
             });
-            
+
+            services.AddScoped(typeof(EFRepository<>));
+
 
             services.AddHttpContextAccessor();
         }

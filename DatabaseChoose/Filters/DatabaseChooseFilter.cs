@@ -37,7 +37,7 @@ namespace DatabaseChoose
             {
                 if (dbWrite.IsWrite)
                 {
-                    _dataBaseConnectionFactory.SetIsWrite(true);
+                    _dataBaseConnectionFactory.SetDatabaseChooseType(DatabaseChooseType.Write);
                 }
             }
         }
