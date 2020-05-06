@@ -26,6 +26,7 @@ EFRepository
     {
     if (!string.IsNullOrWhiteSpace(dataBaseConnectionFactory.ConnectionString))
     {
+		//重新设置连接字符串
         context.Database.GetDbConnection().ConnectionString = dataBaseConnectionFactory.ConnectionString;
     }
     this._context = context;
