@@ -32,13 +32,18 @@ namespace DataBaseReadWriteSeparation.Controllers
         }
         [HttpPost]
         [DatabaseChoose(true)]
-        public async Task<bool> post()
+        public async Task<IEnumerable<Users>> post()
         {
             Users user = new Users() {
             Name="张三",
             Sex= Guid.NewGuid().ToString()
             };
-            return await _repositoryUser.AddAsync(user);
+            await _repositoryUser.AddAsync(user);
+
+
+           var list = await _repositoryUser.GetListAsync(a => a.Id > 0);
+
+           return list;
         }
     }
 }
