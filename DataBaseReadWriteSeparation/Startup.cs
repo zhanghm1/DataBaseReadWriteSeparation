@@ -33,13 +33,17 @@ namespace DataBaseReadWriteSeparation
             });
 
             string writeConnectionString = Configuration.GetConnectionString("writeDB");
-            string readConnectionString = Configuration.GetConnectionString("readDB");
+
+            var readDBs = Configuration.GetSection("ConnectionStrings:readDBs");
+            var readConnectionStrings = readDBs.Get<List<string>>();
+            
+
             services.AddDbContext<TestDbcontext>(options =>
                     options.UseMySql(writeConnectionString));
 
             services.AddDatabaseChoose(a=> {
                 a.WriteConnectionString = writeConnectionString;
-                a.ReadConnectionString = readConnectionString;
+                a.ReadConnectionStrings = readConnectionStrings.ToArray();
                 //a.DefaultChoose = DatabaseChooseType.Read;
             });
 

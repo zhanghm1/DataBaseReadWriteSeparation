@@ -15,13 +15,8 @@ namespace DataBaseReadWriteSeparation.Data
        
         public EFRepository(TestDbcontext context, DataBaseConnectionFactory dataBaseConnectionFactory)
         {
-            if (!string.IsNullOrWhiteSpace(dataBaseConnectionFactory.ConnectionString))
-            {
-                //重新设置连接字符串
-                context.Database.GetDbConnection().ConnectionString = dataBaseConnectionFactory.ConnectionString;
-            }
+            this._context = (TestDbcontext)dataBaseConnectionFactory.GetDbContext(context);
 
-            this._context = context;
             this._dbset = context.Set<T>();
 
             

@@ -30,7 +30,8 @@ namespace DataBaseReadWriteSeparation.Controllers
         {
             return await _repositoryUser.GetListAsync(a => a.Id > 0);
         }
-        [HttpPost]
+        [HttpGet]
+        [Route("add")]
         [DatabaseChoose(true)]
         public async Task<IEnumerable<Users>> post()
         {

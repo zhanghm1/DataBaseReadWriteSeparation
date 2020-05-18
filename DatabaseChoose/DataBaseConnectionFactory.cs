@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,11 @@ namespace DatabaseChoose
         {
             this.DatabaseChooseType = chooseType;
             this.ConnectionString = GetConnectionString(chooseType);
+        }
+        public DbContext GetDbContext(DbContext context)
+        {
+            context.Database.GetDbConnection().ConnectionString = ConnectionString;
+            return context;
         }
 
         private string GetConnectionString(DatabaseChooseType chooseType)
