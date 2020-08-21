@@ -1,4 +1,8 @@
 # DataBaseReadWriteSeparation
+<a HREF="https://996.icu" >
+  <IMG  SRC="https://img.shields.io/badge/link-996.icu-red.svg" ALT="996.icu" />
+</a>
+
 读写分离
 	
 	这里主要需要确定的是-----这个http请求是需要连接writeDB还是readDB,而不是每次连接数据库时都去确定然后切换连接字符串。所以把连接字符串的确定放在了 Controller，用特性标识；
