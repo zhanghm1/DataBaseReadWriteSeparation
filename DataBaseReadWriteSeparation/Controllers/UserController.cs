@@ -14,7 +14,6 @@ namespace DataBaseReadWriteSeparation.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-
         private readonly ILogger<UserController> _logger;
 
         private EFRepository<Users> _repositoryUser;
@@ -26,25 +25,31 @@ namespace DataBaseReadWriteSeparation.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Users>>  Get()
+        public async Task<Users> Get()
         {
-            return await _repositoryUser.GetListAsync(a => a.Id > 0);
+            return await _repositoryUser.FirstOrDefaultAsync(a => a.Id > 0);
         }
+
         [HttpGet]
-        [Route("add")]
+        [Route("list")]
         [DatabaseChoose(true)]
-        public async Task<IEnumerable<Users>> post()
+        public async Task<IEnumerable<Users>> GetList()
         {
-            Users user = new Users() {
-            Name="张三",
-            Sex= Guid.NewGuid().ToString()
+            var list = await _repositoryUser.GetListAsync(a => a.Id > 0);
+
+            return list;
+        }
+
+        [HttpPost]
+        public async Task<bool> Post()
+        {
+            Users user = new Users()
+            {
+                Name = "张三",
+                Sex = Guid.NewGuid().ToString()
             };
-            await _repositoryUser.AddAsync(user);
 
-
-           var list = await _repositoryUser.GetListAsync(a => a.Id > 0);
-
-           return list;
+            return await _repositoryUser.AddAsync(user);
         }
     }
 }

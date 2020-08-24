@@ -12,14 +12,16 @@ namespace DataBaseReadWriteSeparation.Data
     {
         private readonly TestDbcontext _context;
         private readonly DbSet<T> _dbset;
-       
-        public EFRepository(TestDbcontext context, DataBaseConnectionFactory dataBaseConnectionFactory)
+
+        public EFRepository(TestDbcontext context)
         {
-            this._context = (TestDbcontext)dataBaseConnectionFactory.GetDbContext(context);
-
+            this._context = context;
             this._dbset = context.Set<T>();
+        }
 
-            
+        public async Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> where)
+        {
+            return await _dbset.Where(where).FirstOrDefaultAsync();
         }
 
         public async Task<List<T>> GetListAsync(Expression<Func<T, bool>> where)
@@ -34,6 +36,5 @@ namespace DataBaseReadWriteSeparation.Data
 
             return true;
         }
-
     }
 }

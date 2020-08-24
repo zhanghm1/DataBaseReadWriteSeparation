@@ -28,7 +28,8 @@ namespace DataBaseReadWriteSeparation
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(a=> {
+            services.AddControllers(a =>
+            {
                 a.Filters.Add<DatabaseChooseFilter>();
             });
 
@@ -36,19 +37,16 @@ namespace DataBaseReadWriteSeparation
 
             var readDBs = Configuration.GetSection("ConnectionStrings:readDBs");
             var readConnectionStrings = readDBs.Get<List<string>>();
-            
 
-            services.AddDbContext<TestDbcontext>(options =>
-                    options.UseMySql(writeConnectionString));
+            services.AddDbContext<TestDbcontext>();
 
-            services.AddDatabaseChoose(a=> {
-                a.WriteConnectionString = writeConnectionString;
-                a.ReadConnectionStrings = readConnectionStrings.ToArray();
-                //a.DefaultChoose = DatabaseChooseType.Read;
+            services.AddDatabaseChoose(a =>
+            {
+                a.WriteConnectionString = writeConnectionString;            // http method post put delete 使用write 库
+                a.ReadConnectionStrings = readConnectionStrings.ToArray();  // http method get  使用read 库
             });
 
             services.AddScoped(typeof(EFRepository<>));
-
 
             services.AddHttpContextAccessor();
         }

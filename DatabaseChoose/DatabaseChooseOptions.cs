@@ -15,7 +15,7 @@ namespace DatabaseChoose
         {
             get
             {
-                if (ReadConnectionStrings.Length==1)
+                if (ReadConnectionStrings.Length == 1)
                 {
                     return ReadConnectionStrings[0];
                 }
@@ -27,16 +27,18 @@ namespace DatabaseChoose
                 this.ReadConnectionStrings[0] = value;
             }
         }
+
         public string[] ReadConnectionStrings { get; set; }
 
         /// <summary>
         /// 默认选择哪个连接字符串
         /// 不设置则使用Read
         /// </summary>
-        public DatabaseChooseType DefaultChoose { get; set; } = DatabaseChooseType.Read;
+        public DatabaseChooseType DefaultChoose { get; set; } = DatabaseChooseType.Write;
     }
+
     public enum DatabaseChooseType
-    { 
+    {
         Write,
         Read
     }

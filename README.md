@@ -1,12 +1,10 @@
 # DataBaseReadWriteSeparation
 读写分离
 	
-	这里主要需要确定的是-----这个http请求是需要连接writeDB还是readDB,而不是每次连接数据库时都去确定然后切换连接字符串。所以把连接字符串的确定放在了 Controller，用特性标识；
-	
-	在某些更新操作时我们要立即查询，如果切换成readDB,但是数据库的主从复制是异步的，可能还没有执行完或者网络等问题错误，就会数据不匹配；
-	
-	所以这里的读写分离是针对同一个http请求下的Dbcontext连接，在这个scope范围内EFRepository是相同的，Dbcontext连接的数据库也是相同的；
-	
+	http method get 请求使用read数据库
+    http method post put delete 请求使用write数据库
+	也可以使用特性指定使用read 还是write 数据库
+
 ConfigureServices
           
     services.AddControllers(a=> {
@@ -15,47 +13,64 @@ ConfigureServices
 
     string writeConnectionString = Configuration.GetConnectionString("writeDB");
     string readConnectionString = Configuration.GetConnectionString("readDB");
-    services.AddDbContext<TestDbcontext>(options =>
-            options.UseMySql(writeConnectionString));
+
+    services.AddDbContext<TestDbcontext>();
 
     services.AddDatabaseChoose(a=> {
         a.WriteConnectionString = writeConnectionString;
         a.ReadConnectionString = readConnectionString;
-        //a.DefaultChoose = DatabaseChooseType.Read;
     });
-	services.AddScoped(typeof(EFRepository<>));
 
-EFRepository
+Dbcontext
 
-    private readonly TestDbcontext _context;
-    private readonly DbSet<T> _dbset;
-    public EFRepository(TestDbcontext context, DataBaseConnectionFactory dataBaseConnectionFactory)
+    public class TestDbcontext : DbContext
     {
-    if (!string.IsNullOrWhiteSpace(dataBaseConnectionFactory.ConnectionString))
-    {
-		//重新设置连接字符串
-        context.Database.GetDbConnection().ConnectionString = dataBaseConnectionFactory.ConnectionString;
+        public TestDbcontext(DbContextOptions<TestDbcontext> options, DataBaseConnectionFactory connectionFactory) : base(GetOptions(connectionFactory))
+        {
+        }
+
+        public DbSet<Users> Users { get; set; }
+
+        public static DbContextOptions<TestDbcontext> GetOptions(DataBaseConnectionFactory connectionFactory)
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<TestDbcontext>();
+            optionsBuilder.UseMySql(connectionFactory.ConnectionString, optionsBuilder =>
+            {
+                optionsBuilder.EnableRetryOnFailure(2);
+            });
+
+            return optionsBuilder.Options;
+        }
     }
-    this._context = context;
-    this._dbset = context.Set<T>();  
-    }
-    
+
 Controller
   
+    [HttpGet]
+    public async Task<Users> Get()
+    {
+        return await _repositoryUser.FirstOrDefaultAsync(a => a.Id > 0);
+    }
+
+    [HttpGet]
+    [Route("list")]
+    [DatabaseChoose(true)]
+    public async Task<IEnumerable<Users>> GetList()
+    {
+        var list = await _repositoryUser.GetListAsync(a => a.Id > 0);
+
+        return list;
+    }
+
     [HttpPost]
-	[DatabaseChoose(true)]
-	public async Task<IEnumerable<Users>> post()
-	{
-		Users user = new Users() {
-		Name="张三",
-		Sex= Guid.NewGuid().ToString()
-		};
-		await _repositoryUser.AddAsync(user);
+    public async Task<bool> Post()
+    {
+        Users user = new Users()
+        {
+            Name = "张三",
+            Sex = Guid.NewGuid().ToString()
+        };
 
-
-	   var list = await _repositoryUser.GetListAsync(a => a.Id > 0);
-
-	   return list;
-	}
+        return await _repositoryUser.AddAsync(user);
+    }
   
   
