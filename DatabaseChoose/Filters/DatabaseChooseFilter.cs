@@ -15,13 +15,11 @@ namespace DatabaseChoose
     /// </summary>
     public class DatabaseChooseFilter : IResourceFilter
     {
-        private DataBaseConnectionFactory _dataBaseConnectionFactory;
-        public IConfiguration Configuration { get; }
+        private IDataBaseConnectionFactory _dataBaseConnectionFactory;
 
-        public DatabaseChooseFilter(DataBaseConnectionFactory dataBaseConnectionFactory, IConfiguration configuration)
+        public DatabaseChooseFilter(IDataBaseConnectionFactory dataBaseConnectionFactory)
         {
             _dataBaseConnectionFactory = dataBaseConnectionFactory;
-            Configuration = configuration;
         }
 
         public void OnResourceExecuted(ResourceExecutedContext context)

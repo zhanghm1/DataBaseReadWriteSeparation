@@ -9,7 +9,21 @@ namespace DatabaseChoose
     /// </summary>
     public class DatabaseChooseOptions
     {
+        private Random random { get; set; }
+
+        public DatabaseChooseOptions()
+        {
+            random = new Random();
+        }
+
         public string WriteConnectionString { get; set; }
+        public string[] ReadConnectionStrings { get; set; }
+
+        /// <summary>
+        /// 默认选择哪个连接字符串
+        /// 不设置则使用Write
+        /// </summary>
+        public DatabaseChooseType DefaultChoose { get; set; } = DatabaseChooseType.Write;
 
         public string ReadConnectionString
         {
@@ -19,22 +33,10 @@ namespace DatabaseChoose
                 {
                     return ReadConnectionStrings[0];
                 }
-                int index = new Random().Next(0, ReadConnectionStrings.Length);
+                int index = random.Next(0, ReadConnectionStrings.Length);
                 return ReadConnectionStrings[index];
             }
-            set
-            {
-                this.ReadConnectionStrings[0] = value;
-            }
         }
-
-        public string[] ReadConnectionStrings { get; set; }
-
-        /// <summary>
-        /// 默认选择哪个连接字符串
-        /// 不设置则使用Read
-        /// </summary>
-        public DatabaseChooseType DefaultChoose { get; set; } = DatabaseChooseType.Write;
     }
 
     public enum DatabaseChooseType

@@ -10,17 +10,22 @@ namespace DataBaseReadWriteSeparation.Data
 {
     public class TestDbcontext : DbContext
     {
-        public TestDbcontext(DbContextOptions<TestDbcontext> options, DataBaseConnectionFactory connectionFactory) : base(GetOptions(connectionFactory))
+        public TestDbcontext(IDataBaseConnectionFactory connectionFactory) : base(GetOptions(connectionFactory))
         {
         }
 
         public DbSet<Users> Users { get; set; }
 
-        public static DbContextOptions<TestDbcontext> GetOptions(DataBaseConnectionFactory connectionFactory)
+        /// <summary>
+        /// 获取DbContextOptions
+        /// </summary>
+        /// <param name="connectionFactory"></param>
+        /// <returns></returns>
+        public static DbContextOptions<TestDbcontext> GetOptions(IDataBaseConnectionFactory connectionFactory)
         {
             //随机选择读数据库节点
             var optionsBuilder = new DbContextOptionsBuilder<TestDbcontext>();
-            optionsBuilder.UseMySql(connectionFactory.ConnectionString, optionsBuilder =>
+            optionsBuilder.UseMySql(connectionFactory.GetConnectionString(), optionsBuilder =>
             {
                 optionsBuilder.EnableRetryOnFailure(2);
             });
