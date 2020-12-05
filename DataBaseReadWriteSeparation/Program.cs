@@ -28,7 +28,6 @@ namespace DataBaseReadWriteSeparation
                     {
                         var context = services.GetRequiredService<TestDbcontext>();
                         context.Database.Migrate();
-
                     }
                     catch (Exception ex)
                     {
@@ -42,8 +41,8 @@ namespace DataBaseReadWriteSeparation
             }
             catch (Exception ex)
             {
-
-                throw ex;
+                //logger
+                // throw ex;
             }
         }
 

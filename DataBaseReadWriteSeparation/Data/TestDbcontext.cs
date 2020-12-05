@@ -1,5 +1,5 @@
-﻿using DatabaseChoose;
-using DataBaseReadWriteSeparation.Models;
+﻿using DataBaseReadWriteSeparation.Models;
+using EFCore.DatabaseChoose;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

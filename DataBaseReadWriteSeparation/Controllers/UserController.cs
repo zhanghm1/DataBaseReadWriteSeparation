@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DatabaseChoose;
 using DataBaseReadWriteSeparation.Data;
 using DataBaseReadWriteSeparation.Models;
+using EFCore.DatabaseChoose;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DatabaseChoose
+namespace EFCore.DatabaseChoose
 {
     public class DatabaseChooseAttribute:Attribute
     {

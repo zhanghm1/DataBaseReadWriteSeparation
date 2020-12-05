@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DatabaseChoose
+namespace EFCore.DatabaseChoose
 {
     /// <summary>
     /// 配置项

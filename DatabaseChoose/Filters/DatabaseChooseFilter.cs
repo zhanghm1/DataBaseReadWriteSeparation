@@ -7,7 +7,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DatabaseChoose
+namespace EFCore.DatabaseChoose
 {
     /// <summary>
     /// 根据特性选择数据连接字符串

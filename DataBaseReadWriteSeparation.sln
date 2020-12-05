@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30002.166
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataBaseReadWriteSeparation", "DataBaseReadWriteSeparation\DataBaseReadWriteSeparation.csproj", "{3F119490-AD03-4B40-9497-CB9729FF1030}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataBaseReadWriteSeparation", "DataBaseReadWriteSeparation\DataBaseReadWriteSeparation.csproj", "{3F119490-AD03-4B40-9497-CB9729FF1030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseChoose", "DatabaseChoose\DatabaseChoose.csproj", "{9FE0F922-E68A-4B4E-BFC0-DCBFD5F3AEB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCore.DatabaseChoose", "DatabaseChoose\EFCore.DatabaseChoose.csproj", "{9FE0F922-E68A-4B4E-BFC0-DCBFD5F3AEB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
